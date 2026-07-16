@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 
-type Kind = "stripe" | "pdf" | "booking";
+type Kind = "stripe" | "pdf";
 
 const MESSAGES: Record<Kind, string> = {
   stripe: "Stripe checkout coming soon — this button will start a secure payment.",
   pdf: "PDF reports are coming soon — this button will download your full report.",
-  booking: "Consultation booking is coming soon — this button will open the FlowNet calendar.",
 };
 
 interface PlaceholderButtonProps {
@@ -17,7 +16,7 @@ interface PlaceholderButtonProps {
 }
 
 /**
- * Placeholder for Stripe checkout / PDF generation / booking integrations.
+ * Placeholder for Stripe checkout / PDF generation integrations.
  * Replace onClick with the real integration when it's connected.
  */
 export default function PlaceholderButton({ kind, className = "btn-primary", children }: PlaceholderButtonProps) {

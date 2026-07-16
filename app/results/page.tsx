@@ -139,9 +139,9 @@ export default function ResultsPage() {
           <PlaceholderButton kind="stripe" className="btn-gold">
             Get Full Report — $97
           </PlaceholderButton>
-          <PlaceholderButton kind="booking" className="btn-primary">
+          <Link href="/book" className="btn-primary w-full">
             Book a FlowNet Consultation
-          </PlaceholderButton>
+          </Link>
           <Link href="/dashboard" className="btn-secondary w-full">
             View My Dashboard
           </Link>
