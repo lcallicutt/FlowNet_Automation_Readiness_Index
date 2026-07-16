@@ -47,7 +47,8 @@ percentage of the maximum possible points. Readiness levels:
 
 - [Next.js 14](https://nextjs.org) (App Router) + TypeScript
 - [Tailwind CSS](https://tailwindcss.com)
-- Local storage persistence (swap for Supabase later)
+- [Neon Postgres](https://neon.tech) + [Drizzle ORM](https://orm.drizzle.team) for assessment storage
+- localStorage cache for the results/dashboard pages
 - Mock/simulated logic clearly marked for future integrations
 
 ## Getting Started
@@ -59,12 +60,36 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Database Setup (Neon via Vercel)
+
+Assessment submissions are stored in a `readiness_assessments` table in Neon
+Postgres (see `db/schema.ts`). One-time setup:
+
+1. In the Vercel dashboard, open the project → **Storage** tab → **Create
+   Database** → choose **Neon** (Marketplace) → connect it to this project.
+   Vercel injects `DATABASE_URL` into all environments automatically.
+2. For local dev, copy the connection string into `.env.local`
+   (see `.env.example`).
+3. Create the table: `npm run db:push` (applies `db/schema.ts` directly), or
+   run the committed SQL migration in `drizzle/` against the database.
+
+### Lead flow
+
+Completing the assessment requires name + email + business type before the
+score is shown. Submissions POST to `/api/assessment`, which recomputes the
+scores server-side, inserts the row into Neon, and then — if
+`GHL_WEBHOOK_URL` is set — POSTs a small tagging payload (`name`, `email`,
+`tier`, `top_weakest_category`) to GoHighLevel. The webhook is a
+notification only: if it fails, the assessment is still saved and the user
+still sees their score. Tiers: 0–39 Leaking, 40–59 Patching, 60–79 Flowing,
+80–100 Optimized.
+
 ## Planned Integrations
 
 The code is structured so these can be connected later without rework:
 
-- **Supabase** — replace `lib/storage.ts` with database queries for user
-  accounts and saved reports
+- **User accounts** — replace the localStorage layer in `lib/storage.ts`
+  with per-user queries against the existing Neon database
 - **Stripe** — replace `components/PlaceholderButton.tsx` (kind `stripe`)
   with real checkout sessions
 - **OpenAI / Claude API** — enrich `lib/assessment.ts` recommendations with
@@ -72,5 +97,6 @@ The code is structured so these can be connected later without rework:
 - **Website scanner API** — replace the deterministic mock generator in
   `lib/audit.ts` with live scanning
 - **PDF generation** — wire the PDF placeholder button to a report generator
-- **n8n / GoHighLevel** — route captured emails and leads
+- **GoHighLevel** — set `GHL_WEBHOOK_URL` to enable contact tagging (already
+  wired in `app/api/assessment/route.ts`)
 - **Google Analytics** — add tracking
