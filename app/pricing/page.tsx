@@ -103,9 +103,9 @@ export default function PricingPage() {
                     Get Pro Audit — {tier.price}
                   </PlaceholderButton>
                 ) : (
-                  <Link href="/book" className="btn-gold w-full">
+                  <PlaceholderButton kind="booking" className="btn-gold">
                     Book Strategy Session — {tier.price}
-                  </Link>
+                  </PlaceholderButton>
                 )}
               </div>
             </div>

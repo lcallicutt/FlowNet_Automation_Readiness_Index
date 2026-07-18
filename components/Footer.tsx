@@ -25,7 +25,7 @@ export default function Footer() {
           <h4 className="mb-3 text-sm font-semibold text-white">Company</h4>
           <ul className="space-y-2 text-sm">
             <li><Link href="/pricing" className="hover:text-teal-300">Pricing</Link></li>
-            <li><Link href="/book" className="hover:text-teal-300">Book a Strategy Session</Link></li>
+            <li><Link href="/pricing" className="hover:text-teal-300">Book a Strategy Session</Link></li>
             <li><Link href="/" className="hover:text-teal-300">About FlowNet</Link></li>
           </ul>
         </div>

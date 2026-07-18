@@ -132,9 +132,9 @@ export default function AuditPage() {
             <PlaceholderButton kind="stripe" className="btn-gold">
               Get Full Audit Report — $97
             </PlaceholderButton>
-            <Link href="/book" className="btn-primary w-full">
+            <PlaceholderButton kind="booking" className="btn-primary">
               Book a FlowNet Consultation
-            </Link>
+            </PlaceholderButton>
             <button
               type="button"
               onClick={() => {

@@ -150,9 +150,9 @@ export default function DashboardPage() {
               <PlaceholderButton kind="stripe" className="btn-gold">
                 Upgrade to Pro Audit — $97
               </PlaceholderButton>
-              <Link href="/book" className="btn-primary w-full">
+              <PlaceholderButton kind="booking" className="btn-primary">
                 Book a Consultation — $297
-              </Link>
+              </PlaceholderButton>
               <PlaceholderButton kind="pdf" className="btn-secondary">
                 Download PDF Report
               </PlaceholderButton>
