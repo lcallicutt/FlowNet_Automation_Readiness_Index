@@ -53,14 +53,19 @@ function validate(body: SubmissionBody): {
  * assessment data beyond the tier and weakest category. Failures are logged
  * and swallowed: the webhook is a notification, never a dependency.
  */
+type GhlNotifyResult = "skipped" | "sent" | "rejected" | "error";
+
 async function notifyGhl(payload: {
   name: string;
   email: string;
   tier: string;
   top_weakest_category: string;
-}) {
+}): Promise<GhlNotifyResult> {
   const url = process.env.GHL_WEBHOOK_URL;
-  if (!url) return;
+  if (!url) {
+    console.log("GHL webhook skipped: GHL_WEBHOOK_URL is not set");
+    return "skipped";
+  }
   try {
     const res = await fetch(url, {
       method: "POST",
@@ -69,10 +74,14 @@ async function notifyGhl(payload: {
       signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) {
-      console.error(`GHL webhook responded ${res.status}`);
+      console.error(`GHL webhook responded ${res.status}: ${await res.text().catch(() => "")}`);
+      return "rejected";
     }
+    console.log("GHL webhook sent successfully");
+    return "sent";
   } catch (err) {
     console.error("GHL webhook failed:", err);
+    return "error";
   }
 }
 
@@ -124,7 +133,7 @@ export async function POST(request: Request) {
     );
   }
 
-  await notifyGhl({
+  const ghlStatus = await notifyGhl({
     name: input.name,
     email: input.email,
     tier: result.tier,
@@ -136,5 +145,8 @@ export async function POST(request: Request) {
     id,
     totalScore: result.overallScore,
     tier: result.tier,
+    // Diagnostic only — never blocks the response. "skipped" means
+    // GHL_WEBHOOK_URL isn't set on this deployment.
+    ghlStatus,
   });
 }
