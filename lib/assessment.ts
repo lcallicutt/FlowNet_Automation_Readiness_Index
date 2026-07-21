@@ -227,9 +227,27 @@ export function getReadinessLevel(score: number): ReadinessLevel {
   );
 }
 
+/**
+ * CRM tier names used for the database record and GHL contact tagging.
+ * Same score bands as the on-screen readiness levels.
+ */
+export const TIERS = [
+  { name: "Leaking", min: 0, max: 39 },
+  { name: "Patching", min: 40, max: 59 },
+  { name: "Flowing", min: 60, max: 79 },
+  { name: "Optimized", min: 80, max: 100 },
+] as const;
+
+export type Tier = (typeof TIERS)[number]["name"];
+
+export function getTier(score: number): Tier {
+  return (TIERS.find((t) => score >= t.min && score <= t.max) ?? TIERS[0]).name;
+}
+
 export interface AssessmentResult {
   overallScore: number;
   levelName: string;
+  tier: Tier;
   categoryScores: CategoryScore[];
   weakestCategories: CategoryScore[];
   recommendations: { category: string; icon: string; advice: string }[];
@@ -238,6 +256,7 @@ export interface AssessmentResult {
   completedAt: string;
   email?: string;
   businessType?: string;
+  name?: string;
 }
 
 /**
@@ -246,7 +265,8 @@ export interface AssessmentResult {
 export function calculateResults(
   answers: Record<string, number>,
   email?: string,
-  businessType?: string
+  businessType?: string,
+  name?: string
 ): AssessmentResult {
   const categoryScores: CategoryScore[] = CATEGORIES.map((cat) => {
     const raw = cat.questions.reduce((sum, q) => sum + (answers[q.id] ?? 1), 0);
@@ -285,6 +305,7 @@ export function calculateResults(
   return {
     overallScore,
     levelName: getReadinessLevel(overallScore).name,
+    tier: getTier(overallScore),
     categoryScores,
     weakestCategories,
     recommendations,
@@ -293,5 +314,6 @@ export function calculateResults(
     completedAt: new Date().toISOString(),
     email,
     businessType,
+    name,
   };
 }

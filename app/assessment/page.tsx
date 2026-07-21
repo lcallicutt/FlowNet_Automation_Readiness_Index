@@ -24,6 +24,7 @@ export default function AssessmentPage() {
   // Steps 0..9 are categories; step 10 is the email capture step.
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [businessType, setBusinessType] = useState(BUSINESS_TYPES[0]);
   const [error, setError] = useState("");
@@ -39,7 +40,7 @@ export default function AssessmentPage() {
   );
 
   const stepComplete = isEmailStep
-    ? /.+@.+\..+/.test(email)
+    ? name.trim().length > 0 && /.+@.+\..+/.test(email)
     : category!.questions.every((q) => answers[q.id] !== undefined);
 
   function selectAnswer(questionId: string, value: number) {
@@ -51,7 +52,7 @@ export default function AssessmentPage() {
     if (!stepComplete) {
       setError(
         isEmailStep
-          ? "Please enter a valid email address to see your results."
+          ? "Please enter your name and a valid email address to see your results."
           : "Please answer all three questions before continuing."
       );
       return;
@@ -73,11 +74,33 @@ export default function AssessmentPage() {
     }
   }
 
-  function submit() {
+  async function submit() {
     setSubmitting(true);
-    const result = calculateResults(answers, email, businessType);
+    const result = calculateResults(answers, email, businessType, name.trim());
+
+    // Persist to the database first. The GHL webhook fires server-side after
+    // the insert. If the API call fails, the user still sees their score —
+    // the local copy below keeps the results page working.
+    try {
+      const res = await fetch("/api/assessment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          businessType,
+          answers,
+        }),
+      });
+      if (!res.ok) {
+        console.error("Assessment save failed:", await res.text());
+      }
+    } catch (err) {
+      console.error("Assessment save failed:", err);
+    }
+
     saveAssessment(result);
-    saveUser({ email });
+    saveUser({ email: email.trim(), name: name.trim() });
     router.push("/results");
   }
 
@@ -163,6 +186,20 @@ export default function AssessmentPage() {
               immediately on the next screen.
             </p>
             <div className="mt-6 space-y-5">
+              <div>
+                <label htmlFor="name" className="label">Your name</label>
+                <input
+                  id="name"
+                  type="text"
+                  className="input"
+                  placeholder="First and last name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setError("");
+                  }}
+                />
+              </div>
               <div>
                 <label htmlFor="email" className="label">Email address</label>
                 <input
