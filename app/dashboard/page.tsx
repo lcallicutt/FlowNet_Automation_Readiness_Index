@@ -2,12 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  getAssessments,
-  getLatestAudit,
-  getUser,
-  type StoredUser,
-} from "@/lib/storage";
+import { getAssessments, getLatestAudit } from "@/lib/storage";
 import { getReadinessLevel, type AssessmentResult } from "@/lib/assessment";
 import { auditGrade, type AuditResult } from "@/lib/audit";
 import ScoreRing from "@/components/ScoreRing";
@@ -16,13 +11,11 @@ import PlaceholderButton from "@/components/PlaceholderButton";
 export default function DashboardPage() {
   const [assessments, setAssessments] = useState<AssessmentResult[]>([]);
   const [audit, setAudit] = useState<AuditResult | null>(null);
-  const [user, setUser] = useState<StoredUser | null>(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setAssessments(getAssessments());
     setAudit(getLatestAudit());
-    setUser(getUser());
     setLoaded(true);
   }, []);
 
@@ -62,12 +55,11 @@ export default function DashboardPage() {
         <div className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
           <div>
             <span className="eyebrow">Dashboard</span>
-            <h1 className="text-3xl font-bold text-navy-900">Welcome back</h1>
-            {user?.email && (
-              <p className="mt-1 text-sm text-navy-500">
-                Signed in as <span className="font-medium text-navy-700">{user.email}</span>
-              </p>
-            )}
+            <h1 className="text-3xl font-bold text-navy-900">Your Results</h1>
+            <p className="mt-1 text-sm text-navy-500">
+              Showing assessments completed in this browser. Results are saved
+              on this device only.
+            </p>
           </div>
           <div className="flex gap-3">
             <Link href="/assessment" className="btn-secondary !px-4 !py-2 text-sm">
