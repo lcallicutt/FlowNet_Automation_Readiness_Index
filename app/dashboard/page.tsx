@@ -6,7 +6,7 @@ import { getAssessments, getLatestAudit } from "@/lib/storage";
 import { getReadinessLevel, type AssessmentResult } from "@/lib/assessment";
 import { auditGrade, type AuditResult } from "@/lib/audit";
 import ScoreRing from "@/components/ScoreRing";
-import PlaceholderButton from "@/components/PlaceholderButton";
+import BookingLink from "@/components/BookingLink";
 
 export default function DashboardPage() {
   const [assessments, setAssessments] = useState<AssessmentResult[]>([]);
@@ -139,15 +139,10 @@ export default function DashboardPage() {
               workflows, or book a strategy session to build it together.
             </p>
             <div className="mt-5 space-y-3">
-              <PlaceholderButton kind="stripe" className="btn-gold">
-                Upgrade to Pro Audit — $97
-              </PlaceholderButton>
-              <PlaceholderButton kind="booking" className="btn-primary">
+              <BookingLink className="btn-gold">Get My Pro Audit</BookingLink>
+              <BookingLink className="btn-primary">
                 Book a Consultation — $297
-              </PlaceholderButton>
-              <PlaceholderButton kind="pdf" className="btn-secondary">
-                Download PDF Report
-              </PlaceholderButton>
+              </BookingLink>
             </div>
           </div>
         </div>

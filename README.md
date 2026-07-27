@@ -90,13 +90,15 @@ The code is structured so these can be connected later without rework:
 
 - **User accounts** — replace the localStorage layer in `lib/storage.ts`
   with per-user queries against the existing Neon database
-- **Stripe** — replace `components/PlaceholderButton.tsx` (kind `stripe`)
-  with real checkout sessions
+- **Stripe** — swap `components/BookingLink.tsx` usages for real checkout
+  sessions where an instant purchase is wanted (all upgrade CTAs currently
+  route to the consultation booking calendar in `lib/config.ts`)
 - **OpenAI / Claude API** — enrich `lib/assessment.ts` recommendations with
   personalized AI-generated roadmaps
 - **Website scanner API** — replace the deterministic mock generator in
   `lib/audit.ts` with live scanning
-- **PDF generation** — wire the PDF placeholder button to a report generator
+- **PDF generation** — add a report download to the dashboard (the earlier
+  placeholder button is hidden until the feature exists)
 - **GoHighLevel** — set `GHL_WEBHOOK_URL` to enable contact tagging (already
   wired in `app/api/assessment/route.ts`)
 - **Google Analytics** — add tracking
