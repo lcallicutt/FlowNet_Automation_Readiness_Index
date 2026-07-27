@@ -1,5 +1,5 @@
 import Link from "next/link";
-import PlaceholderButton from "@/components/PlaceholderButton";
+import BookingLink from "@/components/BookingLink";
 
 const TIERS = [
   {
@@ -99,13 +99,11 @@ export default function PricingPage() {
                     Start Free Assessment
                   </Link>
                 ) : tier.cta === "stripe" ? (
-                  <PlaceholderButton kind="stripe" className="btn-primary">
-                    Get Pro Audit — {tier.price}
-                  </PlaceholderButton>
+                  <BookingLink className="btn-primary">Get Pro Audit</BookingLink>
                 ) : (
-                  <PlaceholderButton kind="booking" className="btn-gold">
+                  <BookingLink className="btn-gold">
                     Book Strategy Session — {tier.price}
-                  </PlaceholderButton>
+                  </BookingLink>
                 )}
               </div>
             </div>

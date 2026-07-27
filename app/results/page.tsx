@@ -6,7 +6,7 @@ import { getLatestAssessment } from "@/lib/storage";
 import { getReadinessLevel, type AssessmentResult } from "@/lib/assessment";
 import ScoreRing from "@/components/ScoreRing";
 import CategoryBar from "@/components/CategoryBar";
-import PlaceholderButton from "@/components/PlaceholderButton";
+import BookingLink from "@/components/BookingLink";
 
 export default function ResultsPage() {
   const [result, setResult] = useState<AssessmentResult | null>(null);
@@ -136,12 +136,10 @@ export default function ResultsPage() {
 
         {/* CTAs */}
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          <PlaceholderButton kind="stripe" className="btn-gold">
-            Get Full Report — $97
-          </PlaceholderButton>
-          <PlaceholderButton kind="booking" className="btn-primary">
+          <BookingLink className="btn-gold">Get My Full Report</BookingLink>
+          <BookingLink className="btn-primary">
             Book a FlowNet Consultation
-          </PlaceholderButton>
+          </BookingLink>
           <Link href="/dashboard" className="btn-secondary w-full">
             View My Dashboard
           </Link>

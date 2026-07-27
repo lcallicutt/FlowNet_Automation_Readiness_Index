@@ -13,7 +13,7 @@ import {
 import { saveAudit, saveUser } from "@/lib/storage";
 import ScoreRing from "@/components/ScoreRing";
 import CategoryBar from "@/components/CategoryBar";
-import PlaceholderButton from "@/components/PlaceholderButton";
+import BookingLink from "@/components/BookingLink";
 
 export default function AuditPage() {
   const [url, setUrl] = useState("");
@@ -129,12 +129,10 @@ export default function AuditPage() {
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            <PlaceholderButton kind="stripe" className="btn-gold">
-              Get Full Audit Report — $97
-            </PlaceholderButton>
-            <PlaceholderButton kind="booking" className="btn-primary">
+            <BookingLink className="btn-gold">Get My Full Audit Report</BookingLink>
+            <BookingLink className="btn-primary">
               Book a FlowNet Consultation
-            </PlaceholderButton>
+            </BookingLink>
             <button
               type="button"
               onClick={() => {
