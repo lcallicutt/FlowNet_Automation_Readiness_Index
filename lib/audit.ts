@@ -45,8 +45,13 @@ export interface AuditResult {
 }
 
 /**
- * Deterministic hash so the same URL always produces the same mock audit.
- * Replace this module's generator with a live website scanner API later.
+ * IMPORTANT: this generator does NOT scan the submitted site. Scores are
+ * illustrative estimates derived from a hash of the URL, so the same URL
+ * always produces the same numbers. Every rating is therefore marked as an
+ * estimate in the UI, and no note claims to have detected anything on the
+ * visitor's site — they describe what good looks like instead.
+ *
+ * Being replaced by a real server-side scan (/api/audit).
  */
 function hashString(str: string): number {
   let hash = 5381;
@@ -85,12 +90,8 @@ const RATING_SPECS: RatingSpec[] = [
     max: 85,
     weight: 1.2,
     threshold: 70,
-    note: (s) =>
-      s < 50
-        ? "We couldn't detect a prominent lead capture form. Visitors likely leave without a way to stay connected."
-        : s < 70
-          ? "A contact option exists, but it isn't positioned to consistently convert visitors into leads."
-          : "Lead capture is present. Consider testing placement and offers to lift conversion further.",
+    note: () =>
+      "What strong lead capture looks like: a form above the fold with a clear value exchange — a guide, checklist, or newsletter — so visitors have a reason to leave their email.",
     opportunity: "Add a lead capture form above the fold with a clear value exchange (guide, checklist, or newsletter)",
   },
   {
@@ -101,12 +102,8 @@ const RATING_SPECS: RatingSpec[] = [
     max: 90,
     weight: 1.2,
     threshold: 70,
-    note: (s) =>
-      s < 50
-        ? "Calls-to-action appear weak or missing. Visitors aren't told clearly what to do next."
-        : s < 70
-          ? "CTAs exist but compete for attention. One primary action per page performs best."
-          : "CTAs are reasonably clear. Test stronger action language and contrast.",
+    note: () =>
+      "What strong CTAs look like: one primary action per page, in high-contrast buttons with specific action language — \"Book your free call,\" not \"Submit.\"",
     opportunity: "Add stronger, high-contrast CTA buttons with one primary action per page",
   },
   {
@@ -117,12 +114,8 @@ const RATING_SPECS: RatingSpec[] = [
     max: 80,
     weight: 1.1,
     threshold: 65,
-    note: (s) =>
-      s < 50
-        ? "No signs of automated follow-up. Inquiries likely wait on manual replies."
-        : s < 65
-          ? "Some follow-up capability detected, but it doesn't appear to be an automated sequence."
-          : "Follow-up foundations look solid. Layer in behavior-based sequences next.",
+    note: () =>
+      "What strong follow-up looks like: every inquiry triggers an instant confirmation, then an automated sequence — no lead waits on someone remembering to reply.",
     opportunity: "Add an automatic email confirmation and a 3-touch follow-up workflow for every inquiry",
   },
   {
@@ -133,12 +126,8 @@ const RATING_SPECS: RatingSpec[] = [
     max: 85,
     weight: 1.1,
     threshold: 65,
-    note: (s) =>
-      s < 50
-        ? "Visitors can't book or pay online without friction — likely requiring emails or phone calls."
-        : s < 65
-          ? "Booking or payment exists but requires too many steps to complete."
-          : "Online booking/payment is available. Optimize the flow to reduce drop-off.",
+    note: () =>
+      "What strong booking/payment looks like: visitors self-serve in a few clicks — pick a time or pay online — without trading emails or phone tag first.",
     opportunity: "Add self-service appointment booking and online payment or donation processing",
   },
   {
@@ -149,12 +138,8 @@ const RATING_SPECS: RatingSpec[] = [
     max: 90,
     weight: 1.0,
     threshold: 70,
-    note: (s) =>
-      s < 55
-        ? "Few trust elements detected (testimonials, reviews, credentials, guarantees)."
-        : s < 70
-          ? "Some trust signals present. Adding specific results and social proof would help."
-          : "Good trust foundation. Keep testimonials fresh and specific.",
+    note: () =>
+      "What strong trust signals look like: specific testimonials with real names and results, review counts, and credentials placed right next to your primary CTAs.",
     opportunity: "Add testimonials, reviews, and credibility markers near your primary CTAs",
   },
   {
@@ -167,7 +152,7 @@ const RATING_SPECS: RatingSpec[] = [
     placeholder: true,
     threshold: 60,
     note: () =>
-      "Placeholder rating — full mobile analysis will run when the live website scanner is connected.",
+      "What strong mobile readiness looks like: tap targets big enough for thumbs, forms that complete on one screen, and fast loads on a phone connection.",
     opportunity: "Verify mobile usability: tap targets, load speed, and form completion on small screens",
   },
   {
@@ -180,7 +165,7 @@ const RATING_SPECS: RatingSpec[] = [
     placeholder: true,
     threshold: 60,
     note: () =>
-      "Placeholder rating — full SEO analysis will run when the live website scanner is connected.",
+      "What strong SEO readiness looks like: a descriptive title and meta description on every page, one clear H1, and analytics installed so you can measure what's working.",
     opportunity: "Add analytics tracking and baseline SEO metadata so you can measure what's working",
   },
 ];

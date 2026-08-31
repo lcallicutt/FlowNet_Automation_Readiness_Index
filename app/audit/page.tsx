@@ -84,10 +84,15 @@ export default function AuditPage() {
               >
                 {grade.label}
               </span>
-              <p className="mt-4 text-xs leading-relaxed text-navy-400">
-                Simulated audit for demonstration. Live website scanning is a
-                planned integration.
-              </p>
+              <div className="mt-4 rounded-lg border border-gold-300 bg-gold-300/20 px-3 py-2.5">
+                <p className="text-xs font-semibold leading-relaxed text-navy-700">
+                  Estimated score — not a live scan
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-navy-500">
+                  These ratings are illustrative benchmarks, not measurements of
+                  your site. Live website scanning is coming soon.
+                </p>
+              </div>
             </div>
 
             <div className="card lg:col-span-3">
@@ -97,16 +102,15 @@ export default function AuditPage() {
               <div className="space-y-4">
                 {result.ratings.map((r) => (
                   <div key={r.id}>
-                    <CategoryBar
-                      name={r.placeholder ? `${r.label} *` : r.label}
-                      score={r.score}
-                    />
+                    <CategoryBar name={r.label} score={r.score} />
                     <p className="mt-1 text-xs leading-relaxed text-navy-500">{r.note}</p>
                   </div>
                 ))}
               </div>
               <p className="mt-4 text-[11px] text-navy-400">
-                * Placeholder rating pending live scanner integration.
+                All ratings are estimates pending live scanner integration — the
+                notes above describe what strong performance looks like in each
+                area.
               </p>
             </div>
           </div>
