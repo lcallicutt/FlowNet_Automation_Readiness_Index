@@ -91,7 +91,16 @@ detects automation signals in the markup (`lib/signals.ts` — forms, CRM and
 marketing platforms, booking/payment embeds, chat widgets, review schema,
 analytics, SEO tags), and pulls Google Lighthouse mobile and SEO scores via
 the PageSpeed Insights API. Results are scored in `lib/audit.ts`, saved to
-the `website_audits` table, and trigger the same tagging webhook.
+the `website_audits` table, and — if `AUDIT_GHL_WEBHOOK_URL` is set — trigger
+a tagging webhook carrying `business_name`, `email`, `website`,
+`audit_score`, `audit_grade`, and `top_weakest_area`.
+
+The audit uses its own webhook, separate from the assessment's
+`GHL_WEBHOOK_URL`: the two payloads share only `email`, so each flow points
+at its own GHL inbound webhook instead of one endpoint that branches on
+payload shape. There is no fallback between them by design — an unset
+`AUDIT_GHL_WEBHOOK_URL` skips the notification rather than posting audit
+data to the assessment webhook.
 
 Set `PAGESPEED_API_KEY` to raise the Lighthouse rate limit; without it the
 API is called unauthenticated and, if that fails, Mobile and SEO fall back to

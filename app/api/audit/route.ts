@@ -65,7 +65,16 @@ function validate(body: SubmissionBody) {
 
 type GhlNotifyResult = "skipped" | "sent" | "rejected" | "error";
 
-/** Tagging-only notification, same contract as the assessment webhook. */
+/**
+ * Tagging-only notification for audits.
+ *
+ * Deliberately a SEPARATE webhook from the assessment flow: the two payloads
+ * share only `email`, so they go to their own GHL inbound webhooks rather
+ * than one endpoint that has to branch on shape. There is intentionally no
+ * fallback to GHL_WEBHOOK_URL — if AUDIT_GHL_WEBHOOK_URL is unset the
+ * notification is skipped, so audit payloads can never land on the
+ * assessment webhook.
+ */
 async function notifyGhl(payload: {
   business_name: string;
   email: string;
@@ -74,9 +83,9 @@ async function notifyGhl(payload: {
   audit_grade: string;
   top_weakest_area: string;
 }): Promise<GhlNotifyResult> {
-  const url = process.env.GHL_WEBHOOK_URL;
+  const url = process.env.AUDIT_GHL_WEBHOOK_URL;
   if (!url) {
-    console.log("GHL webhook skipped: GHL_WEBHOOK_URL is not set");
+    console.log("Audit GHL webhook skipped: AUDIT_GHL_WEBHOOK_URL is not set");
     return "skipped";
   }
   try {
@@ -87,13 +96,15 @@ async function notifyGhl(payload: {
       signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) {
-      console.error(`GHL webhook responded ${res.status}: ${await res.text().catch(() => "")}`);
+      console.error(
+        `Audit GHL webhook responded ${res.status}: ${await res.text().catch(() => "")}`
+      );
       return "rejected";
     }
-    console.log("GHL webhook sent successfully");
+    console.log("Audit GHL webhook sent successfully");
     return "sent";
   } catch (err) {
-    console.error("GHL webhook failed:", err);
+    console.error("Audit GHL webhook failed:", err);
     return "error";
   }
 }
