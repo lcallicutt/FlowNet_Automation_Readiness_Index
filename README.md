@@ -84,6 +84,26 @@ notification only: if it fails, the assessment is still saved and the user
 still sees their score. Tiers: 0–39 Leaking, 40–59 Patching, 60–79 Flowing,
 80–100 Optimized.
 
+### Website audit scanner
+
+`/api/audit` performs a real scan: it fetches the submitted URL server-side,
+detects automation signals in the markup (`lib/signals.ts` — forms, CRM and
+marketing platforms, booking/payment embeds, chat widgets, review schema,
+analytics, SEO tags), and pulls Google Lighthouse mobile and SEO scores via
+the PageSpeed Insights API. Results are scored in `lib/audit.ts`, saved to
+the `website_audits` table, and trigger the same tagging webhook.
+
+Set `PAGESPEED_API_KEY` to raise the Lighthouse rate limit; without it the
+API is called unauthenticated and, if that fails, Mobile and SEO fall back to
+markup-only heuristics (surfaced in the UI rather than hidden).
+
+**Security:** the scanner fetches anonymous user-supplied URLs, so
+`lib/scanner.ts` validates every hop — including each redirect — against
+loopback, private, link-local, and cloud-metadata ranges (SSRF defense), and
+enforces http(s) only, a redirect cap, a 2 MB body cap, and a 10s timeout.
+`/api/audit` is rate limited per IP. Both are documented inline; read those
+notes before changing the fetch path.
+
 ## Planned Integrations
 
 The code is structured so these can be connected later without rework:
@@ -95,8 +115,9 @@ The code is structured so these can be connected later without rework:
   route to the consultation booking calendar in `lib/config.ts`)
 - **OpenAI / Claude API** — enrich `lib/assessment.ts` recommendations with
   personalized AI-generated roadmaps
-- **Website scanner API** — replace the deterministic mock generator in
-  `lib/audit.ts` with live scanning
+- **Headless-browser scanning** — the live scanner (`lib/scanner.ts`) reads
+  server-rendered HTML only, so JS-injected widgets on SPA sites can be
+  missed; a hosted headless browser would close that gap
 - **PDF generation** — add a report download to the dashboard (the earlier
   placeholder button is hidden until the feature exists)
 - **GoHighLevel** — set `GHL_WEBHOOK_URL` to enable contact tagging (already
