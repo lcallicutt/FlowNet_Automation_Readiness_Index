@@ -1,12 +1,27 @@
 import Link from "next/link";
-import BookingLink from "@/components/BookingLink";
+import {
+  DEEP_DIVE_AUDIT_PAYMENT_URL,
+  STRATEGY_SESSION_PAYMENT_URL,
+  CARE_PLAN_PAYMENT_URL,
+} from "@/lib/config";
 
-const TIERS = [
+interface Tier {
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  features: string[];
+  cta: { label: string; href: string; external: boolean };
+  highlight: boolean;
+}
+
+const TIERS: Tier[] = [
   {
-    name: "Free Assessment",
+    name: "Readiness Snapshot",
     price: "$0",
     period: "forever free",
-    description: "Find out where you stand and what to fix first.",
+    description:
+      "Your readiness score, category breakdown, and top 3 recommendations. Two minutes, no card.",
     features: [
       "Basic Automation Readiness Score",
       "Basic category breakdown",
@@ -14,39 +29,70 @@ const TIERS = [
       "Estimated time-saving opportunity",
       "Website Automation Audit (basic)",
     ],
-    cta: "free" as const,
+    cta: { label: "Start Free", href: "/assessment", external: false },
     highlight: false,
   },
   {
-    name: "Pro Audit",
+    name: "Deep Dive Audit",
     price: "$97",
     period: "one-time",
-    description: "The complete picture plus a prioritized action plan.",
+    description:
+      "Full readiness report, website audit, priority roadmap, and 10 workflows matched to your weakest areas, emailed within 24 hours. Applies as a $97 credit toward a Strategy Session or Care Plan.",
     features: [
       "Full Automation Readiness Report",
       "Complete Website Automation Audit",
       "Priority automation roadmap",
-      "PDF report download",
       "10 recommended workflows",
       "Tool suggestions for each workflow",
     ],
-    cta: "stripe" as const,
+    cta: {
+      label: "Get the Audit",
+      href: DEEP_DIVE_AUDIT_PAYMENT_URL,
+      external: true,
+    },
     highlight: true,
   },
   {
     name: "Strategy Session",
     price: "$297",
     period: "one-time",
-    description: "Work directly with FlowNet to build your automation plan.",
+    description:
+      "Everything in the Deep Dive Audit plus a 60-minute working call and a custom automation roadmap you can hand to any builder, including us.",
     features: [
-      "Everything in Pro Audit",
+      "Everything in the Deep Dive Audit",
       "60-minute FlowNet Automation strategy call",
       "Custom automation roadmap",
       "Specific tool recommendations",
       "Next-step implementation plan",
       "30 days of email follow-up support",
     ],
-    cta: "booking" as const,
+    cta: {
+      label: "Book Strategy Session",
+      href: STRATEGY_SESSION_PAYMENT_URL,
+      external: true,
+    },
+    highlight: false,
+  },
+  {
+    name: "Care Plan",
+    price: "From $149/mo",
+    // No period label: "/mo" already carries it, and the extra word pushed
+    // the price onto two lines in the four-column grid.
+    period: "",
+    description:
+      "We implement your roadmap and keep it running. Standard ($249) includes Grace Ministry Hub for churches. Cancel anytime with 30 days notice.",
+    features: [
+      "Ongoing implementation of your roadmap",
+      "Monitoring and maintenance of live workflows",
+      "Standard tier includes Grace Ministry Hub for churches",
+      "Priority support",
+      "Cancel anytime with 30 days notice",
+    ],
+    cta: {
+      label: "Start Standard",
+      href: CARE_PLAN_PAYMENT_URL,
+      external: true,
+    },
     highlight: false,
   },
 ];
@@ -60,11 +106,11 @@ export default function PricingPage() {
           <h1 className="section-title">Simple pricing. Serious time savings.</h1>
           <p className="mt-4 text-navy-600">
             Start with a free score. Upgrade when you&apos;re ready for the
-            complete roadmap — or let us build it with you.
+            complete roadmap, or let us build it with you.
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {TIERS.map((tier) => (
             <div
               key={tier.name}
@@ -75,14 +121,24 @@ export default function PricingPage() {
               }`}
             >
               {tier.highlight && (
-                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-teal-500 px-4 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-teal-600 px-4 py-1 text-xs font-bold uppercase tracking-wide text-white">
                   Most Popular
                 </span>
               )}
               <h2 className="text-lg font-bold text-navy-900">{tier.name}</h2>
-              <div className="mt-3 flex items-baseline gap-2">
-                <span className="text-4xl font-extrabold text-navy-900">{tier.price}</span>
-                <span className="text-sm text-navy-500">{tier.period}</span>
+              <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
+                {/* A "From ..." price renders its prefix small so the figure
+                    itself stays at full size and on one line in the
+                    four-column grid. */}
+                {tier.price.startsWith("From ") && (
+                  <span className="text-sm font-semibold text-navy-500">From</span>
+                )}
+                <span className="text-4xl font-extrabold text-navy-900">
+                  {tier.price.replace(/^From\s+/, "")}
+                </span>
+                {tier.period && (
+                  <span className="text-sm text-navy-500">{tier.period}</span>
+                )}
               </div>
               <p className="mt-3 text-sm text-navy-600">{tier.description}</p>
               <ul className="mt-6 flex-1 space-y-3">
@@ -94,16 +150,26 @@ export default function PricingPage() {
                 ))}
               </ul>
               <div className="mt-7">
-                {tier.cta === "free" ? (
-                  <Link href="/assessment" className="btn-secondary w-full">
-                    Start Free Assessment
-                  </Link>
-                ) : tier.cta === "stripe" ? (
-                  <BookingLink className="btn-primary">Get Pro Audit</BookingLink>
+                {tier.cta.external ? (
+                  <a
+                    href={tier.cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full ${
+                      tier.highlight ? "btn-solid-teal" : "btn-outline-teal"
+                    }`}
+                  >
+                    {tier.cta.label}
+                  </a>
                 ) : (
-                  <BookingLink className="btn-gold">
-                    Book Strategy Session — {tier.price}
-                  </BookingLink>
+                  <Link
+                    href={tier.cta.href}
+                    className={`w-full ${
+                      tier.highlight ? "btn-solid-teal" : "btn-outline-teal"
+                    }`}
+                  >
+                    {tier.cta.label}
+                  </Link>
                 )}
               </div>
             </div>
@@ -113,13 +179,13 @@ export default function PricingPage() {
         <div className="mx-auto mt-14 max-w-2xl rounded-2xl bg-navy-950 p-8 text-center text-white">
           <h3 className="text-xl font-bold">Not sure which is right for you?</h3>
           <p className="mt-2 text-sm leading-relaxed text-navy-300">
-            Take the free assessment first. Your score will show you exactly
-            how much opportunity is on the table — then you can decide if the
+            Take the Readiness Snapshot first. Your score will show you exactly
+            how much opportunity is on the table, then you can decide if the
             full roadmap is worth it. (Hint: it usually pays for itself in the
             first week of saved time.)
           </p>
           <Link href="/assessment" className="btn-primary mt-6">
-            Start With the Free Assessment
+            Start the Readiness Snapshot
           </Link>
         </div>
       </div>

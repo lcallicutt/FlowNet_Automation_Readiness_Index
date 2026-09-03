@@ -139,7 +139,7 @@ export default function DashboardPage() {
               workflows, or book a strategy session to build it together.
             </p>
             <div className="mt-5 space-y-3">
-              <BookingLink className="btn-gold">Get My Pro Audit</BookingLink>
+              <BookingLink className="btn-gold">Get My Deep Dive Audit</BookingLink>
               <BookingLink className="btn-primary">
                 Book a Consultation — $297
               </BookingLink>

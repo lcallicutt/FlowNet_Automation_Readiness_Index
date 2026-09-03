@@ -27,7 +27,7 @@ systems — and shows them what to automate first.
 | `/assessment` | Multi-step readiness quiz (10 categories × 3 questions, 1–5 scale) with email capture |
 | `/results` | Score, readiness level, category breakdown, recommendations, and upgrade CTAs |
 | `/audit` | Website Automation Audit form and simulated results |
-| `/pricing` | Free / Pro Audit ($97) / Strategy Session ($297) tiers |
+| `/pricing` | Readiness Snapshot (free) / Deep Dive Audit ($97) / Strategy Session ($297) / Care Plan (from $149/mo) tiers |
 | `/dashboard` | Latest scores, assessment history, next steps, upgrade and booking CTAs |
 
 ## Scoring

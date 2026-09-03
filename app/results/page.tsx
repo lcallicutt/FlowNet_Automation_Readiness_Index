@@ -126,7 +126,7 @@ export default function ResultsPage() {
             <div className="mt-6 rounded-xl bg-navy-950 p-5 text-white">
               <p className="text-sm font-semibold">Want the full picture?</p>
               <p className="mt-1 text-xs leading-relaxed text-navy-300">
-                The Pro Audit includes your complete report, a website
+                The Deep Dive Audit includes your complete report, a website
                 automation audit, a priority roadmap, and 10 recommended
                 workflows tailored to your scores.
               </p>
