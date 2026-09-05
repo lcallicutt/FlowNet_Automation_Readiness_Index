@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "FlowNet Automation Readiness Index — Know what to automate before you automate",
+  title: "FlowNet Automation Readiness Index: Know what to automate before you automate",
   description:
     "Find out how ready your business is for automation. Get a clear score, practical recommendations, and a roadmap for saving time with smarter systems.",
 };

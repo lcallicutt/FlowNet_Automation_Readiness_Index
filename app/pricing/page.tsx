@@ -20,8 +20,7 @@ const TIERS: Tier[] = [
     name: "Readiness Snapshot",
     price: "$0",
     period: "forever free",
-    description:
-      "Your readiness score, category breakdown, and top 3 recommendations. Two minutes, no card.",
+    description: "Your score and top recommendations in two minutes.",
     features: [
       "Basic Automation Readiness Score",
       "Basic category breakdown",
@@ -37,7 +36,7 @@ const TIERS: Tier[] = [
     price: "$97",
     period: "one-time",
     description:
-      "Full readiness report, website audit, priority roadmap, and 10 workflows matched to your weakest areas, emailed within 24 hours. Applies as a $97 credit toward a Strategy Session or Care Plan.",
+      "The full report and roadmap, emailed within 24 hours. $97 credits toward the next step.",
     features: [
       "Full Automation Readiness Report",
       "Complete Website Automation Audit",
@@ -57,7 +56,7 @@ const TIERS: Tier[] = [
     price: "$297",
     period: "one-time",
     description:
-      "Everything in the Deep Dive Audit plus a 60-minute working call and a custom automation roadmap you can hand to any builder, including us.",
+      "The audit plus a 60-minute working call and a roadmap you can hand to any builder.",
     features: [
       "Everything in the Deep Dive Audit",
       "60-minute FlowNet Automation strategy call",
@@ -67,7 +66,7 @@ const TIERS: Tier[] = [
       "30 days of email follow-up support",
     ],
     cta: {
-      label: "Book Strategy Session",
+      label: "Book Session",
       href: STRATEGY_SESSION_PAYMENT_URL,
       external: true,
     },
@@ -79,8 +78,7 @@ const TIERS: Tier[] = [
     // No period label: "/mo" already carries it, and the extra word pushed
     // the price onto two lines in the four-column grid.
     period: "",
-    description:
-      "We implement your roadmap and keep it running. Standard ($249) includes Grace Ministry Hub for churches. Cancel anytime with 30 days notice.",
+    description: "We implement your roadmap and keep it running.",
     features: [
       "Ongoing implementation of your roadmap",
       "Monitoring and maintenance of live workflows",
@@ -156,7 +154,7 @@ export default function PricingPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`w-full ${
-                      tier.highlight ? "btn-solid-teal" : "btn-outline-teal"
+                      tier.highlight ? "btn-primary" : "btn-outline-teal"
                     }`}
                   >
                     {tier.cta.label}
@@ -165,7 +163,7 @@ export default function PricingPage() {
                   <Link
                     href={tier.cta.href}
                     className={`w-full ${
-                      tier.highlight ? "btn-solid-teal" : "btn-outline-teal"
+                      tier.highlight ? "btn-primary" : "btn-outline-teal"
                     }`}
                   >
                     {tier.cta.label}

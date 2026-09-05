@@ -141,7 +141,7 @@ export default function DashboardPage() {
             <div className="mt-5 space-y-3">
               <BookingLink className="btn-gold">Get My Deep Dive Audit</BookingLink>
               <BookingLink className="btn-primary">
-                Book a Consultation — $297
+                Book a Consultation ($297)
               </BookingLink>
             </div>
           </div>
