@@ -39,7 +39,7 @@ export default function DashboardPage() {
           steps once you complete an assessment or website audit.
         </p>
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/assessment" className="btn-primary">Start Free Assessment</Link>
+          <Link href="/assessment" className="btn-primary">Get Your Free Snapshot</Link>
           <Link href="/audit" className="btn-secondary">Run Website Audit</Link>
         </div>
       </div>

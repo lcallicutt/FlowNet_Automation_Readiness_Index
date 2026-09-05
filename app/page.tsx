@@ -369,7 +369,7 @@ export default function Home() {
               href="/assessment"
               className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-navy-900 shadow-lift transition hover:bg-navy-50"
             >
-              Start Free Assessment
+              Get Your Free Snapshot
             </Link>
             <Link
               href="/audit"

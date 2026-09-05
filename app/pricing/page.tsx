@@ -73,17 +73,17 @@ const TIERS: Tier[] = [
     highlight: false,
   },
   {
-    name: "Care Plan",
-    price: "From $149/mo",
-    // No period label: "/mo" already carries it, and the extra word pushed
-    // the price onto two lines in the four-column grid.
-    period: "",
+    name: "Care Plan Standard",
+    price: "$249",
+    period: "per month",
     description: "We implement your roadmap and keep it running.",
     features: [
-      "Ongoing implementation of your roadmap",
+      "Implementation of your roadmap",
       "Monitoring and maintenance of live workflows",
-      "Standard tier includes Grace Ministry Hub for churches",
-      "Priority support",
+      "3 improvement hours per month",
+      "Monthly health report",
+      "Includes Grace Ministry Hub for churches",
+      "Next-business-day support",
       "Cancel anytime with 30 days notice",
     ],
     cta: {
@@ -124,19 +124,11 @@ export default function PricingPage() {
                 </span>
               )}
               <h2 className="text-lg font-bold text-navy-900">{tier.name}</h2>
-              <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
-                {/* A "From ..." price renders its prefix small so the figure
-                    itself stays at full size and on one line in the
-                    four-column grid. */}
-                {tier.price.startsWith("From ") && (
-                  <span className="text-sm font-semibold text-navy-500">From</span>
-                )}
+              <div className="mt-3 flex items-baseline gap-2">
                 <span className="text-4xl font-extrabold text-navy-900">
-                  {tier.price.replace(/^From\s+/, "")}
+                  {tier.price}
                 </span>
-                {tier.period && (
-                  <span className="text-sm text-navy-500">{tier.period}</span>
-                )}
+                <span className="text-sm text-navy-500">{tier.period}</span>
               </div>
               <p className="mt-3 text-sm text-navy-600">{tier.description}</p>
               <ul className="mt-6 flex-1 space-y-3">

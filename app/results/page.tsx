@@ -35,7 +35,7 @@ export default function ResultsPage() {
           and personalized recommendations.
         </p>
         <Link href="/assessment" className="btn-primary mt-6">
-          Start Free Assessment
+          Get Your Free Snapshot
         </Link>
       </div>
     );
