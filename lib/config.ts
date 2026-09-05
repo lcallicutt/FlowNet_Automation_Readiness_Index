@@ -7,13 +7,14 @@ export const BOOKING_URL =
   "https://api.growthhub365.com/widget/booking/UjrHn0RU4NZstAw53cYW";
 
 /**
- * Paid tier checkout links.
+ * Paid tier checkout links (GrowthHub365 payment links).
  *
- * TODO: these are PLACEHOLDERS, not live payment links. Replace each with the
- * real checkout URL before the pricing page sees traffic. Every button using
- * them opens in a new tab, so a wrong value sends a buyer off site silently
- * rather than throwing anything visible.
+ * The Care Plan and Strategy Session ids differ by only a few characters, so
+ * check the full id when changing either one.
  */
-export const DEEP_DIVE_AUDIT_PAYMENT_URL = "[DEEP_DIVE_AUDIT_PAYMENT_URL]";
-export const STRATEGY_SESSION_PAYMENT_URL = "[STRATEGY_SESSION_PAYMENT_URL]";
-export const CARE_PLAN_PAYMENT_URL = "[CARE_PLAN_PAYMENT_URL]";
+export const DEEP_DIVE_AUDIT_PAYMENT_URL =
+  "https://api.growthhub365.com/payment-link/6a99715da7f78e147447ea55";
+export const STRATEGY_SESSION_PAYMENT_URL =
+  "https://api.growthhub365.com/payment-link/6a9971a3ceb12d9fc1a8ad4e";
+export const CARE_PLAN_PAYMENT_URL =
+  "https://api.growthhub365.com/payment-link/6a9971d3ceb12d9fc1a8ad50";
