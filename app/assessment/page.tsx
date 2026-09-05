@@ -228,7 +228,7 @@ export default function AssessmentPage() {
                 </select>
               </div>
               <p className="text-xs text-navy-400">
-                We&apos;ll use your email to save your results. No spam — ever.
+                We&apos;ll use your email to save your results. No spam, ever.
               </p>
             </div>
           </div>

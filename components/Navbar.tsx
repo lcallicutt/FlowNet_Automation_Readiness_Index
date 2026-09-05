@@ -35,7 +35,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link href="/assessment" className="btn-primary ml-3 !px-4 !py-2">
-            Start Free Assessment
+            Get Your Free Snapshot
           </Link>
         </div>
         <button
@@ -65,7 +65,7 @@ export default function Navbar() {
             onClick={() => setOpen(false)}
             className="btn-primary mt-2 w-full"
           >
-            Start Free Assessment
+            Get Your Free Snapshot
           </Link>
         </div>
       )}

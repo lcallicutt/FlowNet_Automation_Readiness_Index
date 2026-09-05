@@ -312,7 +312,7 @@ export default function AuditPage() {
           </button>
           <p className="text-center text-xs text-navy-400">
             {scanning
-              ? "This takes up to 30 seconds — we're loading your site and running Google Lighthouse."
+              ? "This takes up to 30 seconds. We're loading your site and running Google Lighthouse."
               : "Live scan of your site · No credit card required"}
           </p>
         </form>

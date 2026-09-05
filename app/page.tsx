@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/assessment";
+import {
+  DEEP_DIVE_AUDIT_PAYMENT_URL,
+  STRATEGY_SESSION_PAYMENT_URL,
+} from "@/lib/config";
 import ScoreRing from "@/components/ScoreRing";
 import CategoryBar from "@/components/CategoryBar";
 
@@ -27,7 +31,7 @@ const AUDIENCES = [
   {
     icon: "🚀",
     title: "Solo Founders",
-    text: "Build systems that let you operate like a team of five — before you can afford one.",
+    text: "Build systems that let you operate like a team of five, before you can afford one.",
   },
   {
     icon: "🔧",
@@ -40,7 +44,7 @@ const STEPS = [
   {
     step: "1",
     title: "Take the free assessment",
-    text: "Answer 30 quick questions across 10 operational areas. It takes about 5 minutes — no tech knowledge required.",
+    text: "Answer 30 quick questions across 10 operational areas. It takes about 5 minutes. No tech knowledge required.",
   },
   {
     step: "2",
@@ -50,7 +54,7 @@ const STEPS = [
   {
     step: "3",
     title: "Follow your roadmap",
-    text: "Get prioritized recommendations for what to automate first — and how much time you could save each week.",
+    text: "Get prioritized recommendations for what to automate first, and how much time you could save each week.",
   },
 ];
 
@@ -73,19 +77,19 @@ const FAQS = [
   },
   {
     q: "I'm not technical. Is this for me?",
-    a: "Absolutely. The assessment asks about how your operations work today — not about technology. The recommendations are written in plain language with clear first steps.",
+    a: "Absolutely. The assessment asks about how your operations work today, not about technology. The recommendations are written in plain language with clear first steps.",
   },
   {
     q: "What is the Website Automation Audit?",
-    a: "Enter your website URL and we evaluate its automation readiness: lead capture, calls-to-action, follow-up, booking and payment readiness, and trust signals — with specific opportunities to improve.",
+    a: "Enter your website URL and we evaluate its automation readiness: lead capture, calls-to-action, follow-up, booking and payment readiness, and trust signals, with specific opportunities to improve.",
   },
   {
     q: "What happens after I get my score?",
-    a: "You'll see exactly where you're losing time and what to automate first. From there you can download a full report (Pro Audit) or book a strategy session to get a custom roadmap built with you.",
+    a: "You'll see exactly where you're losing time and what to automate first. From there you can get the Deep Dive Audit for a full report emailed to you, or book a Strategy Session to get a custom roadmap built with you.",
   },
   {
     q: "Do you work with churches and nonprofits?",
-    a: "Yes — churches and nonprofits are core to who we serve. The assessment covers giving, member management, volunteer coordination, and communication alongside business use cases.",
+    a: "Yes. Churches and nonprofits are core to who we serve. The assessment covers giving, member management, volunteer coordination, and communication alongside business use cases.",
   },
 ];
 
@@ -116,7 +120,7 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/assessment" className="btn-primary !px-8 !py-3.5 !text-base">
-                Start Free Assessment
+                Get Your Free Snapshot
               </Link>
               <Link
                 href="/audit"
@@ -168,7 +172,7 @@ export default function Home() {
           <h2 className="section-title">Built for people who wear too many hats</h2>
           <p className="mt-4 text-navy-600">
             If you&apos;re running operations on memory, sticky notes, and late
-            nights — this was made for you.
+            nights, this was made for you.
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -211,7 +215,7 @@ export default function Home() {
             <h2 className="section-title">A score for every part of your operation</h2>
             <p className="mt-4 leading-relaxed text-navy-600">
               The Automation Readiness Index measures 10 areas of your business
-              — from lead capture and follow-up to payments, documentation, and
+              covering lead capture and follow-up through payments, documentation, and
               AI usage. You&apos;ll see exactly which systems are strong and
               which are costing you hours every week.
             </p>
@@ -237,7 +241,7 @@ export default function Home() {
             </div>
             <p className="mt-6 rounded-lg bg-gold-500/10 px-4 py-3 text-xs leading-relaxed text-navy-700">
               <strong>💡 In this example:</strong> Documentation and Follow-Up are the
-              biggest opportunities — automating them first could save 6+ hours per week.
+              biggest opportunities. Automating them first could save 6+ hours per week.
             </p>
           </div>
         </div>
@@ -255,27 +259,38 @@ export default function Home() {
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-                name: "Free Assessment",
+                name: "Readiness Snapshot",
                 price: "$0",
-                desc: "Your readiness score, category breakdown, and top 3 recommendations.",
+                desc: "Your readiness score, category breakdown, and top 3 recommendations. Two minutes, no card.",
+                cta: { label: "Start Free", href: "/assessment", external: false },
                 highlight: false,
               },
               {
-                name: "Pro Audit",
+                name: "Deep Dive Audit",
                 price: "$97",
-                desc: "Full report, website audit, priority roadmap, PDF download, and 10 recommended workflows.",
+                desc: "Full readiness report, website audit, priority roadmap, and 10 workflows matched to your weakest areas, emailed within 24 hours. Applies as a $97 credit toward a Strategy Session or Care Plan.",
+                cta: {
+                  label: "Get the Audit",
+                  href: DEEP_DIVE_AUDIT_PAYMENT_URL,
+                  external: true,
+                },
                 highlight: true,
               },
               {
                 name: "Strategy Session",
                 price: "$297",
-                desc: "Everything in Pro plus a 60-minute strategy call and a custom automation roadmap.",
+                desc: "Everything in the Deep Dive Audit plus a 60-minute working call and a custom automation roadmap you can hand to any builder, including us.",
+                cta: {
+                  label: "Book Session",
+                  href: STRATEGY_SESSION_PAYMENT_URL,
+                  external: true,
+                },
                 highlight: false,
               },
             ].map((t) => (
               <div
                 key={t.name}
-                className={`rounded-2xl border p-6 ${
+                className={`flex flex-col rounded-2xl border p-6 ${
                   t.highlight
                     ? "border-teal-400 bg-navy-900 shadow-lift"
                     : "border-navy-700 bg-navy-900/50"
@@ -283,7 +298,32 @@ export default function Home() {
               >
                 <h3 className="text-lg font-semibold">{t.name}</h3>
                 <p className="mt-2 text-3xl font-extrabold">{t.price}</p>
-                <p className="mt-3 text-sm leading-relaxed text-navy-300">{t.desc}</p>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-navy-300">
+                  {t.desc}
+                </p>
+                <div className="mt-6">
+                  {t.cta.external ? (
+                    <a
+                      href={t.cta.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-full ${
+                        t.highlight ? "btn-primary" : "btn-outline-teal-dark"
+                      }`}
+                    >
+                      {t.cta.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={t.cta.href}
+                      className={`w-full ${
+                        t.highlight ? "btn-primary" : "btn-outline-teal-dark"
+                      }`}
+                    >
+                      {t.cta.label}
+                    </Link>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -322,14 +362,14 @@ export default function Home() {
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-teal-50">
             In 5 minutes you&apos;ll know exactly where you&apos;re losing time
-            — and what to automate first.
+            and what to automate first.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/assessment"
               className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3.5 text-base font-semibold text-navy-900 shadow-lift transition hover:bg-navy-50"
             >
-              Start Free Assessment
+              Get Your Free Snapshot
             </Link>
             <Link
               href="/audit"
